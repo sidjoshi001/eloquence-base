@@ -416,7 +416,7 @@ class Builder extends HookableBuilder
      */
     protected function isLeftMatching($word)
     {
-        return ends_with($word, '*');
+        return \Str::endsWith($word, '*');
     }
 
     /**
@@ -427,7 +427,7 @@ class Builder extends HookableBuilder
      */
     protected function isWildcard($word)
     {
-        return ends_with($word, '*') && starts_with($word, '*');
+        return \Str::endsWith($word, '*') && \Str::startsWith($word, '*');
     }
 
     /**
