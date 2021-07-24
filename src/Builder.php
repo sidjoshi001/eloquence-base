@@ -3,6 +3,7 @@
 namespace Sofa\Eloquence;
 
 use Sofa\Eloquence\Searchable\Column;
+use Carbon\Carbon;
 use Illuminate\Database\Query\Expression;
 use Sofa\Hookable\Builder as HookableBuilder;
 use Sofa\Eloquence\Searchable\ColumnCollection;
@@ -84,6 +85,28 @@ class Builder extends HookableBuilder
             $this->query->from($this->buildSubquery($words, $columns, $threshold));
         }
 
+        return $this;
+    }
+
+    /**
+     * Filter the Query by Date Range on "Current Table" only 
+     * abd return results (Developed By Tymk Softwares)
+     *
+     * @param  string $date_range (Format: `START_DATE - END_DATE`, where joiner '-' is very Important)
+     * @param  string $column
+     * @return $this
+     */
+    public function filterDate($date_range, $column = 'created_at')
+    {
+        if ($date_range) {
+            $dates = explode('-', $date_range);
+            $start_date = Carbon::parse(trim($dates[0]))->startOfDay();
+            $end_date = Carbon::parse(trim($dates[1]))->endOfDay();
+            $this->query->where([
+                [$this->model->getTable() . '.' . $column, '>=', $start_date],
+                [$this->model->getTable() . '.' . $column, '<=', $end_date]
+            ]);
+        }
         return $this;
     }
 
