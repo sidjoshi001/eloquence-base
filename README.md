@@ -31,3 +31,7 @@ To validate your builds before committing use the following composer command:
 ```bash
 composer test
 ```
+
+Modification:
+ - By Tymk Softwares for Compitability with `gazsp/baum`
+ - Filter With DateRange
