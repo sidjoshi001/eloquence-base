@@ -25,6 +25,8 @@ composer require sofa/eloquence-base
 
 Shout out to all the Contributors!
 
+1. filterDate added in Builder
+
 All contributions are welcome, PRs must be **tested** and **PSR-2 compliant**.
 
 To validate your builds before committing use the following composer command:
