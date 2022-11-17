@@ -468,13 +468,15 @@ class Builder extends HookableBuilder
         // appropriately and build a searchable column collection, which we will
         // use to build select and where clauses with correct table prefixes.
         foreach ($mappings as $mapping => $weight) {
+
             if (strpos($mapping, '.') !== false) {
                 list($relation, $column) = $this->model->parseMappedColumn($mapping);
 
                 $related = $joiner->leftJoin($relation);
 
+                /* Join Related table found then add database of related Table will be added */
                 $columns->add(
-                    new Column($grammar, $related->getTable(), $column, $mapping, $weight)
+                    new Column($grammar, $related->getTable(), $column, $mapping, $weight, $related->getConnection()->getDatabaseName())
                 );
             } else {
                 $columns->add(

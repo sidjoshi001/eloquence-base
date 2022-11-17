@@ -10,6 +10,9 @@ class Column
     protected $grammar;
 
     /** @var string */
+    protected $database;
+
+    /** @var string */
     protected $table;
 
     /** @var string */
@@ -23,13 +26,14 @@ class Column
 
     /**
      * Create new searchable column instance.
-     *
+     * Join Related table found then add database of related Table will be added
      * @param string  $table
      * @param string  $name
      * @param string  $mapping
      * @param integer $weight
+     * @param null $database
      */
-    public function __construct(Grammar $grammar, $table, $name, $mapping, $weight = 1)
+    public function __construct(Grammar $grammar, $table, $name, $mapping, $weight = 1, $database = null)
     {
         $this->grammar = $grammar;
         $this->table   = $table;
@@ -55,7 +59,20 @@ class Column
      */
     public function getQualifiedName()
     {
-        return $this->getTable().'.'.$this->getName();
+        if ($this->getDatabase()) {
+            return $this->getDatabase() . '.' . $this->getTable() . '.' . $this->getName();
+        }
+        else {
+            return $this->getTable() . '.' . $this->getName();
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatabase()
+    {
+        return $this->database;
     }
 
     /**
