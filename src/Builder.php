@@ -99,15 +99,31 @@ class Builder extends HookableBuilder
      */
     public function filterDate($date_range, $column = 'created_at')
     {
+        
         if ($date_range) {
-            $dates = explode('-', $date_range);
-            $start_date = Carbon::parse(trim($dates[0]))->startOfDay();
-            $end_date = Carbon::parse(trim($dates[1]))->endOfDay();
-            $this->query->where([
-                [$this->model->getTable() . '.' . $column, '>=', $start_date],
-                [$this->model->getTable() . '.' . $column, '<=', $end_date]
-            ]);
+
+            if (substr_count($date_range, '-') > 0) {
+
+                $dates = explode('-', $date_range);
+
+                $startAt = Carbon::parse(trim($dates[0]))->startOfDay();
+                $endAt = Carbon::parse(trim($dates[1]))->endOfDay();
+
+                $this->query->where([
+                    [$this->model->getTable() . '.' . $column, '>=', $startAt],
+                    [$this->model->getTable() . '.' . $column, '<=', $endAt]
+                ]);
+
+            }
+            else {
+
+                $this->query->whereDate($this->model->getTable() . '.' . $column,
+                    '=',
+                    Carbon::parse($date_range)->toDateString()
+                );
+            }
         }
+        
         return $this;
     }
 
